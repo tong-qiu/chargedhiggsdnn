@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 from sklearn.preprocessing import StandardScaler
+import time
 
 class Net(nn.Module):
     def __init__(self, inden):
@@ -40,7 +41,7 @@ def reweight(df):
 
 def main():
     device = torch.device('cpu')
-    # device = torch.device('cuda:0')
+    #device = torch.device('cuda:0')
 
     # load csv
     pd_bkg = pd.read_csv("bgLep.csv").rename(columns=lambda x: x.strip())
@@ -106,11 +107,12 @@ def main():
     batch_size = 100
 
     model = Net(train_x.shape[1])
-    print(train_x.shape)
+    model.to(device)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
 
-    for epoch in range(1, 6):
+    start = time.time()
+    for epoch in range(1, 10):
         batch_count = 0
         permutation = torch.randperm(train_x.size()[0])
         model.train()
@@ -143,7 +145,8 @@ def main():
         print('Epoch: {} \tTraining Loss: {:.6f} \Validation Loss: {:.6f}'.format(
             epoch, train_loss, val_loss))
 
-
+    end = time.time() - start
+    print(end)
 
 if __name__ == "__main__":
     pd.options.mode.chained_assignment = None
