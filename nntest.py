@@ -112,7 +112,7 @@ def main():
     optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
 
     start = time.time()
-    for epoch in range(1, 10):
+    for epoch in range(1, 15):
         batch_count = 0
         permutation = torch.randperm(train_x.size()[0])
         model.train()
@@ -147,6 +147,15 @@ def main():
 
     end = time.time() - start
     print(end)
+    output = model(test_x).detach().numpy()
+    test_y = test_y.numpy()
+    test_weight = test_weight.numpy()
+    signal = output[test_y == 1]
+    signal_weight = output[test_y == 1]
+    bkg = output[test_y == 0]
+    bkg_weight = output[test_y == 0]
+    print(np.mean(bkg))
+    print(np.mean(signal))
 
 if __name__ == "__main__":
     pd.options.mode.chained_assignment = None
