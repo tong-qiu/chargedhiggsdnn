@@ -151,9 +151,9 @@ def main():
     test_y = test_y.numpy()
     test_weight = test_weight.numpy()
     signal = output[test_y == 1]
-    signal_weight = output[test_y == 1]
+    signal_weight = test_weight[test_y == 1]
     bkg = output[test_y == 0]
-    bkg_weight = output[test_y == 0]
+    bkg_weight = test_weight[test_y == 0]
     print(np.mean(bkg))
     print(np.mean(signal))
 
